@@ -12,5 +12,10 @@
         {
             this.Health = health;
         }
+
+        public override string ToString()
+        {
+            return $"Hero: Health({Health}), Position({X}, {Y})";
+        }
     }
 }

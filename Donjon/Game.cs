@@ -16,12 +16,16 @@ namespace Donjon
         {
             // init game
             this.hero = new Hero(health: 100);
+            bool printDebugInfo = false;
             PopulateMap();
 
             // game loop
             do
             {
                 Console.Clear();
+                if (printDebugInfo)
+                    PrintDebugInfo();
+
                 PrintMap();
                 PrintStatus();
 
@@ -47,7 +51,7 @@ namespace Donjon
                         hero.Y = 0;
                         break;
                     case ConsoleKey.F5:
-                        Console.WriteLine("Debug info: " + hero);
+                        printDebugInfo = !printDebugInfo;
                         break;
                 }
 
@@ -96,6 +100,18 @@ namespace Donjon
                 }
                 Console.WriteLine();
             }
+        }
+
+        private void PrintDebugInfo()
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Debug info: ");
+
+            Console.WriteLine(hero);
+            Console.WriteLine();
+
+            Console.ResetColor();
         }
     }
 }
