@@ -6,6 +6,7 @@ namespace Donjon
     {
         private Map map;
         private Hero hero;
+        private string log = "";
 
         public Game(int width, int height)
         {
@@ -22,8 +23,9 @@ namespace Donjon
             do
             {
                 Console.Clear();
-                PrintMap();
                 PrintStatus();
+                PrintMap();
+                PrintLog();
                 PrintVisible();
 
                 Console.WriteLine("What do you do?");
@@ -58,14 +60,23 @@ namespace Donjon
             // game over
         }
 
+        private void PrintLog()
+        {
+            Console.WriteLine(log);
+            log = "";
+        }
+
         private void Fight(Monster monster)
         {
-            Console.WriteLine(hero.Fight(monster));
+            Log(hero.Fight(monster));
 
             if (monster.Health > 0)
-            {
-                Console.WriteLine(monster.Fight(hero));
-            }
+                Log(monster.Fight(hero));
+        }
+
+        private void Log(string message)
+        {
+            log += message + "\n";
         }
 
         private void PrintVisible()
