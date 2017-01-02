@@ -24,7 +24,9 @@ namespace Donjon
                 Console.Clear();
                 PrintMap();
                 PrintStatus();
+                PrintVisible();
 
+                Console.WriteLine("What do you do?");
                 ConsoleKey key = GetInput();
 
                 // process actions
@@ -43,8 +45,8 @@ namespace Donjon
                         if (hero.Y < map.Height - 1) hero.Y++;
                         break;
                     case ConsoleKey.Spacebar:
-                        hero.X = 0;
-                        hero.Y = 0;
+                        var monster = map.Cells[hero.X, hero.Y].Monster;
+                        if (monster != null) Fight(monster);
                         break;
                     case ConsoleKey.F5:
                         Console.WriteLine("Debug info: " + hero);
@@ -54,6 +56,27 @@ namespace Donjon
             } while (true);
 
             // game over
+        }
+
+        private void Fight(Monster monster)
+        {
+            Console.WriteLine(hero.Fight(monster));
+
+            if (monster.Health > 0)
+            {
+                Console.WriteLine(monster.Fight(hero));
+            }
+        }
+
+        private void PrintVisible()
+        {
+            var cell = map.Cells[hero.X, hero.Y];
+            var monster = cell.Monster;
+            if (monster != null)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"You see a {monster.Name} ({monster.Health} hp)");
+            }
         }
 
         private void PopulateMap()
@@ -83,16 +106,27 @@ namespace Donjon
                 {
                     var cell = map.Cells[x, y];
                     Console.Write(" ");
+
+                    Creature creature = null;
                     if (this.hero.X == x && this.hero.Y == y)
-                        Console.Write("H");
+                    {
+                        creature = hero;
+                    }
                     else if (cell.Monster != null)
                     {
-                        Console.ForegroundColor = cell.Monster.Color;
-                        Console.Write(cell.Monster.MapSymbol);
-                        Console.ResetColor();
+                        creature = cell.Monster;
                     }
                     else
+                    {
                         Console.Write(".");
+                    }
+
+                    if (creature != null)
+                    {
+                        Console.ForegroundColor = creature.Color;
+                        Console.Write(creature.MapSymbol);
+                        Console.ResetColor();
+                    }
                 }
                 Console.WriteLine();
             }

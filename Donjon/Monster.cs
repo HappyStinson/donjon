@@ -2,20 +2,38 @@
 
 namespace Donjon
 {
-    public abstract class Monster
+    public abstract class Creature
+    {
+        public string MapSymbol { get; }
+        public ConsoleColor Color { get; protected set; }
+
+        public Creature(string mapSymbol)
+        {
+            MapSymbol = mapSymbol;
+        }
+    }
+
+    public abstract class Monster : Creature
     {
         public int Health { get; set; }
-        public string MapSymbol { get; }
         public string Name { get; }
-        public ConsoleColor Color { get; protected set; } = ConsoleColor.Red;
 
         protected int Damage = 20;
 
-        public Monster(string mapSymbol, string name, int health)
+        public Monster(string mapSymbol, string name, int health) : base(mapSymbol)
         {
-            MapSymbol = mapSymbol;
             Name = name;
             Health = health;
+            Color = ConsoleColor.Red;
+        }
+
+        internal string Fight(Hero hero)
+        {
+            hero.Health -= Damage;
+            if (hero.Health > 0)
+                return $"The {Name} attacked you for {Damage} hp damage.";
+            else
+                return $"You were killed by the {Name}!";
         }
     }
 
