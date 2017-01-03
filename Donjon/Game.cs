@@ -17,12 +17,16 @@ namespace Donjon
         {
             // init game
             this.hero = new Hero(health: 100);
+            bool printDebugInfo = false;
             PopulateMap();
 
             // game loop
             do
             {
                 Console.Clear();
+                if (printDebugInfo)
+                    PrintDebugInfo();
+
                 PrintStatus();
                 PrintMap();
                 PrintLog();
@@ -51,7 +55,7 @@ namespace Donjon
                         if (monster != null) Fight(monster);
                         break;
                     case ConsoleKey.F5:
-                        Console.WriteLine("Debug info: " + hero);
+                        printDebugInfo = !printDebugInfo;
                         break;
                 }
 
@@ -62,7 +66,7 @@ namespace Donjon
 
         private void PrintLog()
         {
-            Console.WriteLine(log);
+            Console.WriteLine("\n" + log);
             log = "";
         }
 
@@ -85,7 +89,6 @@ namespace Donjon
             var monster = cell.Monster;
             if (monster != null)
             {
-                Console.WriteLine();
                 Console.WriteLine($"You see a {monster.Name} ({monster.Health} hp)");
             }
         }
@@ -100,7 +103,7 @@ namespace Donjon
 
         private void PrintStatus()
         {
-            Console.WriteLine($"\nHealth: {hero.Health} hp");
+            Console.WriteLine($"Health: {hero.Health} hp\n");
         }
 
         private ConsoleKey GetInput()
@@ -141,6 +144,18 @@ namespace Donjon
                 }
                 Console.WriteLine();
             }
+        }
+
+        private void PrintDebugInfo()
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Debug info: ");
+
+            Console.WriteLine(hero);
+            Console.WriteLine();
+
+            Console.ResetColor();
         }
     }
 }

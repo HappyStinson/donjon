@@ -24,5 +24,10 @@ namespace Donjon
             else
                 return $"You slayed the {monster.Name}!";
         }
+
+        public override string ToString()
+        {
+            return $"Hero: Health({Health}), Position({X}, {Y})";
+        }
     }
 }
